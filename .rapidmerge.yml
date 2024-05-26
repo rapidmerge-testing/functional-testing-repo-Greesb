@@ -1,0 +1,22 @@
+queue_rules:
+  - name: test1
+    conditions:
+      - label=queue-merge
+    allow_inplace_checks: False
+    speculative_checks: 5
+
+pull_request_rules:
+  - name: Automatic merge on approval
+    conditions:
+      - body-raw~=.*good to merge.* 
+    actions:
+      comment:
+        message: Good to merge
+      merge:
+        method: merge
+  - name: Queue on queue label
+    conditions:
+      - label=queue
+    actions:
+      queue:
+        name: test1
